@@ -36,6 +36,7 @@ pets = [Dog("REX"), Cat("MIA"), Parrot("MAI")]
 def interact_with_pets(pets):
     for x in pets:
         x.make_sound()
+        # Great, next time make sure to change it so that we don't need to use isinstance
         if isinstance(x, Parrot):
             x.repeat_word("Polly wants a cracker!")
 
