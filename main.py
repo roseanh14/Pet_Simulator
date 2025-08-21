@@ -37,6 +37,7 @@ pets = [Dog("REX"), Cat("MIA"), Parrot("MAI")]
 def interact_with_pets(pets):
     for x in pets:
         x.make_sound()
+        x.random_event()
         if isinstance(x, Parrot):
             x.repeat_word("Polly wants a cracker!")
 

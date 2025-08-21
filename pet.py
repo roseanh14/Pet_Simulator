@@ -3,6 +3,7 @@ from exceptions import (
     InvalidEnergyValueError,
     InvalidHappinessValueError,
 )
+import random
 
 
 class Pet:
@@ -82,3 +83,18 @@ class Pet:
         if value > 100:
             return 100
         return int(value)
+
+    def random_event(self):
+        event = random.choice(["illness", "sleep", "cuddling"])
+
+        if event == "illness":
+            self.energy = max(0, self.energy - 15)
+            self.happiness = max(0, self.happiness - 10)
+            print(f"Oh no!  {self.name} got sick. Energy -15, Happiness -10 ")
+
+        elif event == "sleep":
+            self.energy = max(0, self.energy - 5)
+            print(f"Oh no! {self.name} feels sleepy! Energy - 5")
+
+        else:
+            print(f"{self.name} is doing fine cuddling today!")
