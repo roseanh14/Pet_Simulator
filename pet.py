@@ -1,3 +1,10 @@
+from exceptions import (
+    InvalidHungerValueError,
+    InvalidEnergyValueError,
+    InvalidHappinessValueError,
+)
+
+
 class Pet:
     def __init__(self, name, hunger=50, energy=50, happiness=15, instincts=None):
         self._name = name
@@ -16,7 +23,9 @@ class Pet:
 
     @hunger.setter
     def hunger(self, value):
-        self._hunger = self._validate_0_100(value, field="hunger")
+        if not 0 <= value <= 100:
+            raise InvalidHungerValueError(f"Hunger must be between 0-100, got {value}")
+        self._hunger = value
 
     @property
     def energy(self):
@@ -24,7 +33,9 @@ class Pet:
 
     @energy.setter
     def energy(self, value):
-        self._energy = self._validate_0_100(value, field="energy")
+        if not 0 <= value <= 100:
+            raise InvalidEnergyValueError(f"Energy must be between 0-100, got {value}")
+        self._energy = value
 
     @property
     def happiness(self):
@@ -32,7 +43,11 @@ class Pet:
 
     @happiness.setter
     def happiness(self, value):
-        self._happiness = self._validate_0_100(value, field="happiness")
+        if not 0 <= value <= 100:
+            raise InvalidHappinessValueError(
+                f"Happiness must be between 0-100, got {value}"
+            )
+        self._happiness = value
 
     @property
     def instincts(self):

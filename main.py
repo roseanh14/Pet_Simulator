@@ -1,7 +1,8 @@
 from pet import Pet
-from dog import Dog
-from cat import Cat
-from parrot import Parrot
+from animals.dog import Dog
+from animals.cat import Cat
+from animals.parrot import Parrot
+from exceptions import InvalidHungerValueError
 
 # my_pet = Pet("Joseph", 20 , 15, 10, ["hunt", "climb", "purr"])
 # my_pet.feed()
@@ -40,7 +41,19 @@ def interact_with_pets(pets):
             x.repeat_word("Polly wants a cracker!")
 
 
-interact_with_pets(pets)
+def main():
+    interact_with_pets(pets)
+
+    # testing exceptions
+    try:
+        p = Pet("MIA")
+        p.hunger = 150
+    except InvalidHungerValueError as e:
+        print("Catched:", e)
+
+
+if __name__ == "__main__":
+    main()
 
 
 # my_dog = Dog("REX")
