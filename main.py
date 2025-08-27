@@ -3,6 +3,7 @@ from animals.dog import Dog
 from animals.cat import Cat
 from animals.parrot import Parrot
 from exceptions import InvalidHungerValueError
+from database_manager import DatabaseManager
 
 # my_pet = Pet("Joseph", 20 , 15, 10, ["hunt", "climb", "purr"])
 # my_pet.feed()
@@ -43,14 +44,25 @@ def interact_with_pets(pets):
 
 
 def main():
-    interact_with_pets(pets)
+    # interact_with_pets(pets)
+
+    db = DatabaseManager()
+    rex_id = db.create_pet("REX", "Dog", hunger=60, energy=50, happiness=40)
+    db.log_activity(rex_id, "FEED", dh=-10)
+    db.log_activity(rex_id, "PLAY", de=-5, dhap=+10)
+    state = db.get_current_state(rex_id)
+    print("REX:", state)
+
+    db.close()
 
     # testing exceptions
-    try:
-        p = Pet("MIA")
-        p.hunger = 150
-    except InvalidHungerValueError as e:
-        print("Catched:", e)
+
+
+# try:
+#   p = Pet("MIA")
+#    p.hunger = 150
+# except InvalidHungerValueError as e:
+#    print("Catched:", e)
 
 
 if __name__ == "__main__":
