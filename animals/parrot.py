@@ -1,4 +1,4 @@
-from pet import Pet
+from .pet import Pet
 
 
 class Parrot(Pet):

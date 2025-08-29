@@ -1,12 +1,13 @@
 import sqlite3
 from datetime import datetime
-
+from pathlib import Path
 
 class DatabaseManager:
-    def __init__(self, db_name="pets.db"):
-        self.db_name = db_name
-        self.conn = sqlite3.connect(self.db_name)
+    def __init__(self, db_name: str = "pets.db"):
+        self.db_path = Path(__file__).with_name(db_name)
+        self.conn = sqlite3.connect(self.db_path)
         self.cursor = self.conn.cursor()
+        self.cursor.execute("PRAGMA foreign_keys = ON;")
         self.create_tables()
 
     def create_tables(self):
@@ -33,7 +34,7 @@ class DatabaseManager:
                 delta_energy INTEGER NOT NULL DEFAULT 0,
                 delta_happiness INTEGER NOT NULL DEFAULT 0,
                 created_at TEXT NOT NULL,
-                FOREIGN KEY (pet_id) REFERENCES pets(id)
+                FOREIGN KEY (pet_id) REFERENCES pets(id) ON DELETE CASCADE
             )
             """
         )
@@ -53,7 +54,6 @@ class DatabaseManager:
             (name, species, hunger, energy, happiness, now),
         )
         self.conn.commit()
-
         self.cursor.execute("SELECT id FROM pets WHERE name = ?", (name,))
         return self.cursor.fetchone()[0]
 
@@ -77,7 +77,6 @@ class DatabaseManager:
         if not base:
             return None
         hunger, energy, happiness = base
-
         self.cursor.execute(
             """
             SELECT
@@ -90,7 +89,6 @@ class DatabaseManager:
             (pet_id,),
         )
         dh, de, dhap = self.cursor.fetchone()
-
         return {
             "hunger": hunger + dh,
             "energy": energy + de,

@@ -1,9 +1,9 @@
-from pet import Pet
+from animals.pet import Pet
 from animals.dog import Dog
 from animals.cat import Cat
 from animals.parrot import Parrot
+from database.database_manager import DatabaseManager
 from exceptions import InvalidHungerValueError
-from database_manager import DatabaseManager
 
 # my_pet = Pet("Joseph", 20 , 15, 10, ["hunt", "climb", "purr"])
 # my_pet.feed()
