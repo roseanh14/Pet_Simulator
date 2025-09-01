@@ -1,4 +1,7 @@
-from animals import Pet,Dog,Cat ,Parrot
+from animals.pet import Pet
+from animals.dog import Dog
+from animals.cat import Cat
+from animals.parrot import Parrot
 
 def test_class_realationships():
     #animals should inherit from Pet
