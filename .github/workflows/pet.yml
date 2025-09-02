@@ -27,6 +27,9 @@ jobs:
 
       - name: Run tests (pytest)
         run: pytest -q tests
+        
+      - name: Normalize .flake8 (strip BOM)
+        run: sed -i '1s/^\xEF\xBB\xBF//' .flake8 || true
 
       - name: Lint (flake8)
-        run: flake8 animals tests database main.py --config=.flake8
+        run: flake8 .
