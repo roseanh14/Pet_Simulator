@@ -4,25 +4,35 @@ from animals.cat import Cat
 from animals.parrot import Parrot
 import inquirer
 import random
+from database.database_manager_usage import create_tables
+
 
 def show_status(pet: Pet):
     print(f"\n=== {pet.name} ===")
     print(f"Hunger: {pet.hunger} | Energy: {pet.energy} | Happiness: {pet.happiness}\n")
 
+
 def choose_pet(pets):
     if len(pets) == 1:
         return pets[0]
-    answer = inquirer.prompt([
-        inquirer.List(
-            'pet',
-            message="Pick a pet",
-            choices=[p.name for p in pets],
-        )
-    ])
-    chosen = answer['pet']
+    answer = inquirer.prompt(
+        [
+            inquirer.List(
+                "pet",
+                message="Pick a pet",
+                choices=[p.name for p in pets],
+            )
+        ]
+    )
+    if not answer or "pet" not in answer:
+        print("No selection detected. Picking the first pet by default.")
+        return pets[0]
+
+    chosen = answer["pet"]
     for p in pets:
         if p.name == chosen:
             return p
+
 
 def menu(pets):
     current = choose_pet(pets)
@@ -39,14 +49,20 @@ def menu(pets):
     ]
 
     while True:
-        answer = inquirer.prompt([
-            inquirer.List(
-                'action',
-                message=f"What do you want to do with {current.name}?",
-                choices=[label for (label, _) in actions],
-            )
-        ])
-        key = dict(actions)[answer['action']]
+        answer = inquirer.prompt(
+            [
+                inquirer.List(
+                    "action",
+                    message=f"What do you want to do with {current.name}?",
+                    choices=[label for (label, _) in actions],
+                )
+            ]
+        )
+        if not answer or "action" not in answer:
+            print("No action selected (cancelled). Exiting menu. Bye!")
+            break
+
+        key = dict(actions)[answer["action"]]
 
         if key == "feed":
             current.feed()
@@ -71,13 +87,17 @@ def menu(pets):
         elif key == "exit":
             break
 
+
 def main():
+    create_tables()
+
     pets = [
         Dog("Rex"),
         Cat("Mia"),
         Parrot("Polly"),
     ]
     menu(pets)
+
 
 if __name__ == "__main__":
     main()

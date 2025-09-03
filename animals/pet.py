@@ -53,15 +53,12 @@ class Pet:
     @happiness.setter
     def happiness(self, value):
         if not 0 <= value <= 100:
-            raise InvalidHappinessValueError(
-                f"Happiness must be between 0-100, got {value}"
-            )
+            raise InvalidHappinessValueError(f"Happiness must be between 0-100, got {value}")
         self._happiness = value
 
     @property
     def instincts(self):
         return list(self._instincts)
-
 
     def _validate_0_100(self, value, field="value"):
         if not isinstance(value, (int, float)):
@@ -93,7 +90,7 @@ class Pet:
         self.hunger = self._validate_0_100(self.hunger + 3, "hunger")
         self.stats["slept"] += 1
         print(f"{self.name} slept. Energy +{duration}, Hunger +3")
-    
+
     def random_event(self):
         event = random.choice(["illness", "fatigue", "cuddling"])
         if event == "illness":
