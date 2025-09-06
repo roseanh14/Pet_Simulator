@@ -20,7 +20,6 @@ CREATE TABLE IF NOT EXISTS pets (
 )
 """
     )
-
     db.execute(
         """
 CREATE TABLE IF NOT EXISTS activities_log (
@@ -78,14 +77,27 @@ def get_current_state(pet_id):
         fetchone=True,
     )
     dh, de, dhap = sums
+    return {"hunger": hunger + dh, "energy": energy + de, "happiness": happiness + dhap}
+
+
+def load_pet_by_name(name):
+    row = db.execute(
+        "SELECT id, species, base_hunger, base_energy, base_happiness FROM pets WHERE name=?",
+        (name,),
+        fetchone=True,
+    )
+    if not row:
+        return None
+    pet_id, species, h, e, hap = row
+    cur = get_current_state(pet_id)
+    hunger = max(0, min(100, cur["hunger"]))
+    energy = max(0, min(100, cur["energy"]))
+    happiness = max(0, min(100, cur["happiness"]))
     return {
-        "hunger": hunger + dh,
-        "energy": energy + de,
-        "happiness": happiness + dhap,
+        "id": pet_id,
+        "name": name,
+        "species": species,
+        "hunger": hunger,
+        "energy": energy,
+        "happiness": happiness,
     }
-
-
-if __name__ == "__main__":
-    pid = create_pet("Micka", "cat")
-    log_activity(pid, "play", dh=-10, de=-20, dhap=+30)
-    print(get_current_state(pid))
