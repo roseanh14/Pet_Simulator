@@ -184,10 +184,10 @@ def create_or_load_pet():
 
 
 def main():
-    create_tables()
+    create_tables() 
     pets = []
     while True:
-        pet = create_or_load_pet()
+        pet = create_or_load_pet() 
         if pet is None:
             break
         if pet == "BACK":
